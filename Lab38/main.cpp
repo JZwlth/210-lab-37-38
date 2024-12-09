@@ -13,11 +13,88 @@ int gen_hash_index(const string &s) {
     return total;
 }
 
+void print_first_100(const map<int, list<string>> &hash_table) {
+    int count = 0;
+    for (auto it = hash_table.begin(); it != hash_table.end() && count < 100; ++it) {
+        cout << "Hash Index: " << it->first << endl;
+        cout << "Codes at this index:" << endl;
+        for (const auto &val : it->second) {
+            cout << "  " << val << endl;
+        }
+        cout << "----------------------" << endl;
+        count++;
+    }
+}
+
+void search_key(const map<int, list<string>> &hash_table) {
+    cout << "Enter the integer key to search for: ";
+    int key;
+    cin >> key;
+    auto it = hash_table.find(key);
+    if (it == hash_table.end()) {
+        cout << "Key " << key << " not found." << endl;
+    } else {
+        cout << "Key " << key << " found. Codes:" << endl;
+        for (const auto &val : it->second) {
+            cout << "  " << val << endl;
+        }
+    }
+}
+
+void add_key(map<int, list<string>> &hash_table) {
+    cout << "Enter the key to add: ";
+    int key;
+    cin >> key;
+    cout << "Enter the code (12-char hex string): ";
+    string code;
+    cin >> code;
+    hash_table[key].push_back(code);
+    cout << "Code added under key " << key << "." << endl;
+}
+
+void remove_key(map<int, list<string>> &hash_table) {
+    cout << "Enter the key to remove: ";
+    int key;
+    cin >> key;
+    auto it = hash_table.find(key);
+    if (it == hash_table.end()) {
+        cout << "Key " << key << " not found, cannot remove." << endl;
+    } else {
+        hash_table.erase(it);
+        cout << "Key " << key << " has been removed." << endl;
+    }
+}
+
+void modify_key(map<int, list<string>> &hash_table) {
+    cout << "Enter the existing key to modify: ";
+    int old_key;
+    cin >> old_key;
+    cout << "Enter the new key to rename it to: ";
+    int new_key;
+    cin >> new_key;
+
+    auto it = hash_table.find(old_key);
+    if (it == hash_table.end()) {
+        cout << "Old key " << old_key << " not found, cannot modify." << endl;
+        return;
+    }
+
+    for (auto &val : it->second) {
+        hash_table[new_key].push_back(val);
+    }
+
+    hash_table.erase(it);
+    cout << "Key " << old_key << " changed to " << new_key << "." << endl;
+}
+
 int main() {
     ifstream infile("lab-37-data.txt");
     if (!infile) {
+        cerr << "Error: Could not open the file." << endl;
+        return 1;
     }
-        map<int, list<string>> hash_table;
+
+    map<int, list<string>> hash_table;
     string code;
     while (infile >> code) {
         int hash_index = gen_hash_index(code);
@@ -64,3 +141,6 @@ int main() {
                 break;
         }
     }
+
+    return 0;
+}
