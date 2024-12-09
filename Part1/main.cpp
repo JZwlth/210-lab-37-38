@@ -11,5 +11,9 @@ int sum_ascii(const string &s) {
 }
 
 int main() {
+    string test_str = "ABC";
+    cout << "Testing sum_ascii('ABC'): " << sum_ascii(test_str) << endl;
+    // ASCII: 'A' = 65, 'B' = 66, 'C' = 67; sum = 65+66+67 = 198
 
+    return 0;
 }
