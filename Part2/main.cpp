@@ -12,7 +12,7 @@ int sum_ascii(const string &s) {
 }
 
 int main() {
-    ifstream infile("data.txt"); 
+    ifstream infile("lab-37-data.txt"); 
     if (!infile) {
         cerr << "Error" << endl;
         return 1;
